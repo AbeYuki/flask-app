@@ -1,23 +1,41 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
-    <body>
-        <h1>ブログアプリケーション</h1>
-        <article>
-            <h2>記事タイトル1</h2>
-            <p>2020年12月7日 15:47</p>
-            <p>記事1の内容です</p>
-        </article>
-        <article>
-            <h2>記事タイトル2</h2>
-            <p>2020年12月14日 09:11</p>
-            <p>記事2の内容です</p>
-        </article>
-    </body>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <title>商品一覧ページ</title>
+</head>
+<body>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>コード</th>
+                    <th>商品名</th>
+                    <th>値段</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data %}
+                <tr>
+                    <th>{{item[0]}}</th>
+                    <th>{{item[1]}}</th>
+                    <th>{{item[2]}}</th>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>    
+    <form action='/result'>
+        <p>＜新規登録＞</p>
+        <label>
+            商品名    
+            <input type="text" name="name">
+        </label>
+        <label >
+            値段
+            <input type="text" name="price">       
+        </label>
+        <button type="submit" formmethod="POST">登録</button>
+    </form>
+</body>
 </html>
