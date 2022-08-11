@@ -1,17 +1,20 @@
-#Flaskとrender_template（HTMLを表示させるための関数）をインポート
-from flask import Flask,render_template
-
-#Flaskオブジェクトの生成
+from flask import Flask
+from flask import render_template, request, redirect
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+import pytz
+ 
 app = Flask(__name__)
-
-
-#「/」へアクセスがあった場合に、"Hello World"の文字列を返す
-@app.route("/")
-def hello():
-    return "Hello World"
-
-
-#「/index」へアクセスがあった場合に、「index.html」を返す
-@app.route("/index")
-def index():
-    return render_template("index.html")
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+db = SQLAlchemy(app)
+ 
+ 
+class BlogArticle(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(50), nullable=False)
+    body = db.Column(db.String(500), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now(pytz.timezone('Asia/Tokyo')))
+ 
+@app.route('/')
+def blog():
+    return render_template('index.html')
