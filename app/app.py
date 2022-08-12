@@ -4,10 +4,14 @@ from flask import Flask,render_template,request,g
 app = Flask(__name__)
 
 def get_db():
-    if 'db' not in g:
-        # データベースをオープンしてFlaskのグローバル変数に保存
-        g.db = sqlite3.connect('TestDB.db')
-    return g.db
+    # with app.app_context() について
+    # 「g」はFlaskのインスタンスであるappのアプリケーションコンテキスト(app_context)に属するものとして動作することでエラーを回避
+    # Flaskのルーティングするためのデコレータ（上記サンプルでは@app.route(‘/’)）にて、インスタンスを指定しているため、get_db内では明示的にアプリケーションコンテキストを指定していませんが、これを実行してもエラーにならない
+    with app.app_context():
+        if 'db' not in g:
+            # データベースをオープンしてFlaskのグローバル変数に保存
+            g.db = sqlite3.connect('TestDB.db')
+        return g.db
 
 @app.route('/')
 def index():
@@ -71,6 +75,20 @@ def result_post():
     con.close()
 
     return render_template('index.html', data = data)
+
+@app.route('/upate', methods=["POST"])
+def update_pos():
+    name = update.form["name"]
+    price = update.form["price"]
+    con = get_db()
+    try:
+    	con.execute("update 商品一覧 set 商品名=?,値段=? where 商品名=name",('name','price'))
+    
+    except sqlite3.Error as e:
+    	print("error",e.args[0])
+
+    con.commit()
+    con.close()
 
 if __name__ == '__main__':
     app.debug = True
