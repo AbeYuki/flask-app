@@ -1,0 +1,11 @@
+version: 3.8
+
+service:
+  app: 
+    images: python
+    port:
+      - "5000:5000"
+  db:
+    images: mariadb
+    port: 
+      - "3306"
