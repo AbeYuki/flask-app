@@ -78,56 +78,80 @@ def result_post():
 
 @app.route('/search', methods=["POST"])
 def search_post():
-    search = request.form["search"]
-    con = get_db()
+    try:
+        search = request.form["search"]
+        con = get_db()
+    
+        # 検索処理
+        #sql_select = "select * from 商品一覧 where 商品名=?"
+        sql = "select * from 商品一覧 where 商品名='{}'".format(search)
+        cur = con.execute(sql)
+        data = cur.fetchall()
+        con.close()
+    
+        return render_template('index.html', data = data)
+    except:
+       # 一覧再読み込み
+        cur = con.execute("select * from 商品一覧 order by コード")
+        data = cur.fetchall()
+        con.close()
 
-    # 検索処理
-    #sql_select = "select * from 商品一覧 where 商品名=?"
-    sql = "select * from 商品一覧 where 商品名='{}'".format(search)
-    cur = con.execute(sql)
-    data = cur.fetchall()
-    con.close()
-
-    return render_template('index.html', data = data)
+        return render_template('index.html', data = data)
 
 @app.route('/update', methods=["POST"])
 def update_post():
-    code = request.form["code"]
-    name = request.form["name"]
-    price = request.form["price"]
-    con = get_db()
+    try:
+        code = request.form["code"]
+        name = request.form["name"]
+        price = request.form["price"]
+        con = get_db()
 
-    # 検索処理
-    #sql_select = "select * from 商品一覧 where 商品名=?"
-    sql = "REPLACE INTO 商品一覧(コード, 商品名, 値段)VALUES({}, '{}', {})".format(code, name, price)
-    cur = con.execute(sql)
-    data = cur.fetchall()
-    con.commit()
+        # 検索処理
+        #sql_select = "select * from 商品一覧 where 商品名=?"
+        sql = "REPLACE INTO 商品一覧(コード, 商品名, 値段)VALUES({}, '{}', {})".format(code, name, price)
+        cur = con.execute(sql)
+        data = cur.fetchall()
+        con.commit()
 
-    # 一覧再読み込み
-    cur = con.execute("select * from 商品一覧 order by コード")
-    data = cur.fetchall()
-    con.close()
+        # 一覧再読み込み
+        cur = con.execute("select * from 商品一覧 order by コード")
+        data = cur.fetchall()
+        con.close()
 
-    return render_template('index.html', data = data)
+        return render_template('index.html', data = data)
+    except:
+       # 一覧再読み込み
+        cur = con.execute("select * from 商品一覧 order by コード")
+        data = cur.fetchall()
+        con.close()
+
+        return render_template('index.html', data = data)
 
 @app.route('/delete', methods=["POST"])
 def delete_post():
-    code = request.form["code"]
-    con = get_db()
+    try:
+        code = request.form["code"]
+        con = get_db()
 
-    # 削除処理
-    sql = "DELETE FROM 商品一覧 WHERE コード={}".format(code)
-    cur = con.execute(sql)
-    data = cur.fetchall()
-    con.commit()
+        # 削除処理
+        sql = "DELETE FROM 商品一覧 WHERE コード={}".format(code)
+        cur = con.execute(sql)
+        data = cur.fetchall()
+        con.commit()
 
-    # 一覧再読み込み
-    cur = con.execute("select * from 商品一覧 order by コード")
-    data = cur.fetchall()
-    con.close()
+        # 一覧再読み込み
+        cur = con.execute("select * from 商品一覧 order by コード")
+        data = cur.fetchall()
+        con.close()
 
-    return render_template('index.html', data = data)
+        return render_template('index.html', data = data)
+    except:
+       # 一覧再読み込み
+        cur = con.execute("select * from 商品一覧 order by コード")
+        data = cur.fetchall()
+        con.close()
+
+        return render_template('index.html', data = data)
 
 
 if __name__ == '__main__':
