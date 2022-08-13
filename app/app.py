@@ -92,19 +92,44 @@ def search_post():
 
 @app.route('/update', methods=["POST"])
 def update_post():
-    update = request.form["update"]
+    code = request.form["code"]
+    name = request.form["name"]
+    price = request.form["price"]
     con = get_db()
 
     # 検索処理
     #sql_select = "select * from 商品一覧 where 商品名=?"
-    sql = "select * from 商品一覧 where 商品名='{}'".format(update)
+    sql = "REPLACE INTO 商品一覧(コード, 商品名, 値段)VALUES({}, '{}', {})".format(code, name, price)
     cur = con.execute(sql)
+    data = cur.fetchall()
+    con.commit()
+
+    # 一覧再読み込み
+    cur = con.execute("select * from 商品一覧 order by コード")
     data = cur.fetchall()
     con.close()
 
     return render_template('index.html', data = data)
 
-    
+@app.route('/delete', methods=["POST"])
+def delete_post():
+    code = request.form["code"]
+    con = get_db()
+
+    # 削除処理
+    sql = "DELETE FROM 商品一覧 WHERE コード={}".format(code)
+    cur = con.execute(sql)
+    data = cur.fetchall()
+    con.commit()
+
+    # 一覧再読み込み
+    cur = con.execute("select * from 商品一覧 order by コード")
+    data = cur.fetchall()
+    con.close()
+
+    return render_template('index.html', data = data)
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0',port='5000',debug=True)
