@@ -76,20 +76,16 @@ def result_post():
 
     return render_template('index.html', data = data)
 
-#@app.route('/upate', methods=["POST"])
-#def update_pos():
-#    name = update.form["name"]
-#    price = update.form["price"]
-#    con = get_db()
-#    try:
-#    	con.execute("update 商品一覧 set 商品名=?,値段=? where 商品名=name",('name','price'))
-#    
-#    except sqlite3.Error as e:
-#    	print("error",e.args[0])
-#
-#    con.commit()
-#    con.close()
+@app.route('/search', methods=["POST"])
+def search_pos():
+    name = search.form["name"]
+    price = search.form["price"]
+    con = get_db()
 
+    # 検索処理
+    sql_select = "select * from 商品一覧(コード, 商品名, 値段)values({},'{}',{})".format(new_code, name, price)
+    con.execute(sql_select)
+    con.commit()
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0',port='5000',debug=True)
