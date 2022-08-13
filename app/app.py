@@ -77,15 +77,34 @@ def result_post():
     return render_template('index.html', data = data)
 
 @app.route('/search', methods=["POST"])
-def search_pos():
-    name = search.form["name"]
-    price = search.form["price"]
+def search_post():
+    search = request.form["search"]
     con = get_db()
 
     # 検索処理
-    sql_select = "select * from 商品一覧(コード, 商品名, 値段)values({},'{}',{})".format(new_code, name, price)
-    con.execute(sql_select)
-    con.commit()
+    #sql_select = "select * from 商品一覧 where 商品名=?"
+    sql = "select * from 商品一覧 where 商品名='{}'".format(search)
+    cur = con.execute(sql)
+    data = cur.fetchall()
+    con.close()
+
+    return render_template('index.html', data = data)
+
+@app.route('/update', methods=["POST"])
+def update_post():
+    update = request.form["update"]
+    con = get_db()
+
+    # 検索処理
+    #sql_select = "select * from 商品一覧 where 商品名=?"
+    sql = "select * from 商品一覧 where 商品名='{}'".format(update)
+    cur = con.execute(sql)
+    data = cur.fetchall()
+    con.close()
+
+    return render_template('index.html', data = data)
+
+    
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0',port='5000',debug=True)

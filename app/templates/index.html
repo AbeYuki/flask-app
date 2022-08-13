@@ -5,6 +5,36 @@
     <title>商品一覧ページ</title>
 </head>
 <body>
+<p>＜一覧表示＞</p>
+<button onclick="location.href='/'">一覧表示</button>
+    <form action='/result'>
+        <p>＜新規登録＞</p>
+        <label>
+            商品名    
+            <input type="text" name="name">
+        </label>
+        <label >
+            値段
+            <input type="text" name="price">       
+        </label>
+        <button type="submit" formmethod="POST">登録</button>
+    </form>
+    <form action='/search'>
+        <p>＜商品検索＞</p>
+        <label>
+            商品名    
+            <input type="text" name="search">
+        </label>
+        <button type="submit" formmethod="POST">検索</button>
+    </form>
+    <form action='/update'>
+        <p>＜商品変更＞</p>
+        <label>
+            商品名    
+            <input type="text" name="update">
+        </label>
+        <button type="submit" formmethod="POST">変更</button>
+    </form>
     <div>
         <table>
             <thead>
@@ -25,25 +55,5 @@
             </tbody>
         </table>
     </div>    
-    <form action='/result'>
-        <p>＜新規登録＞</p>
-        <label>
-            商品名    
-            <input type="text" name="name">
-        </label>
-        <label >
-            値段
-            <input type="text" name="price">       
-        </label>
-        <button type="submit" formmethod="POST">登録</button>
-    </form>
-    <form action='/search'>
-        <p>＜商品検索＞</p>
-        <label>
-            商品名    
-            <input type="text" name="name">
-        </label>
-        <button type="submit" formmethod="POST">検索</button>
-    </form>
 </body>
 </html>
