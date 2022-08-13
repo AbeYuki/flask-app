@@ -51,30 +51,38 @@ def index():
 
 @app.route('/result', methods=["POST"])
 def result_post():
-    # テンプレートから新規登録する商品名と値段を取得
-    name = request.form["name"]
-    price = request.form["price"]
+    try:
+        # テンプレートから新規登録する商品名と値段を取得
+        name = request.form["name"]
+        price = request.form["price"]
 
-    # データベースを開く
-    con = get_db()
+        # データベースを開く
+        con = get_db()
 
-    # コードは既に登録されているコードの最大値＋１の値で新規登録を行う
-    cur = con.execute("select MAX(コード) AS max_code from 商品一覧")
-    for row in cur:
-        new_code = row[0] + 1
-    cur.close()
+        # コードは既に登録されているコードの最大値＋１の値で新規登録を行う
+        cur = con.execute("select MAX(コード) AS max_code from 商品一覧")
+        for row in cur:
+            new_code = row[0] + 1
+        cur.close()
 
-    # 登録処理
-    sql = "INSERT INTO 商品一覧(コード, 商品名, 値段)values({},'{}',{})".format(new_code, name, price)
-    con.execute(sql)
-    con.commit()
+        # 登録処理
+        sql = "INSERT INTO 商品一覧(コード, 商品名, 値段)values({},'{}',{})".format(new_code, name, price)
+        con.execute(sql)
+        con.commit()
 
-    # 一覧再読み込み
-    cur = con.execute("select * from 商品一覧 order by コード")
-    data = cur.fetchall()
-    con.close()
+        # 一覧再読み込み
+        cur = con.execute("select * from 商品一覧 order by コード")
+        data = cur.fetchall()
+        con.close()
 
-    return render_template('index.html', data = data)
+        return render_template('index.html', data = data)
+    except:
+       # 一覧再読み込み
+        cur = con.execute("select * from 商品一覧 order by コード")
+        data = cur.fetchall()
+        con.close()
+
+        return render_template('index.html', data = data)    
 
 @app.route('/search', methods=["POST"])
 def search_post():
