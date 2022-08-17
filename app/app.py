@@ -116,7 +116,7 @@ def update_post():
 
         # 検索処理
         #sql_select = "select * from 商品一覧 where 商品名=?"
-        sql = "REPLACE INTO 商品一覧(コード, 商品名, 値段)VALUES({}, '{}', {})".format(code, name, price)
+        sql = "UPDATE 商品一覧 SET 商品名='{}', 値段='{}' WHERE コード={}".format(name, price, code)
         cur = con.execute(sql)
         data = cur.fetchall()
         con.commit()
