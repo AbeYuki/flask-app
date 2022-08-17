@@ -77,7 +77,7 @@ def result_post():
 
         return render_template('index.html', data = data)
     except:
-       # 一覧再読み込み
+        # 一覧再読み込み
         cur = con.execute("select * from 商品一覧 order by コード")
         data = cur.fetchall()
         con.close()
@@ -98,7 +98,7 @@ def search_post():
     
         return render_template('index.html', data = data)
     except:
-       # 一覧再読み込み
+        # 一覧再読み込み
         cur = con.execute("select * from 商品一覧 order by コード")
         data = cur.fetchall()
         con.close()
@@ -126,7 +126,7 @@ def update_post():
 
         return render_template('index.html', data = data)
     except:
-       # 一覧再読み込み
+        # 一覧再読み込み
         cur = con.execute("select * from 商品一覧 order by コード")
         data = cur.fetchall()
         con.close()
@@ -152,7 +152,7 @@ def delete_post():
 
         return render_template('index.html', data = data)
     except:
-       # 一覧再読み込み
+        # 一覧再読み込み
         cur = con.execute("select * from 商品一覧 order by コード")
         data = cur.fetchall()
         con.close()
