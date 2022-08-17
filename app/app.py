@@ -91,7 +91,6 @@ def search_post():
         con = get_db()
     
         # 検索処理
-        #sql_select = "select * from 商品一覧 where 商品名=?"
         sql = "select * from 商品一覧 where 商品名='{}'".format(search)
         cur = con.execute(sql)
         data = cur.fetchall()
@@ -115,7 +114,6 @@ def update_post():
         con = get_db()
 
         # 検索処理
-        #sql_select = "select * from 商品一覧 where 商品名=?"
         sql = "UPDATE 商品一覧 SET 商品名='{}', 値段='{}' WHERE コード={}".format(name, price, code)
         cur = con.execute(sql)
         data = cur.fetchall()
